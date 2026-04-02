@@ -1,0 +1,33 @@
+# PlatformIO
+.pio/
+libdeps/
+
+# Build outputs (firmware + compiled artifacts)
+*.elf
+*.hex
+*.bin
+*.uf2
+*.o
+*.a
+*.d
+
+# IDE (VS Code)
+.vscode/
+*.code-workspace
+
+# Python cache (PlatformIO backend uses Python)
+__pycache__/
+*.pyc
+
+# OS noise (Windows)
+Thumbs.db
+Desktop.ini
+
+# Secrets / local config
+Config.h
+secrets.h
+*.secret.h
+.env
+
+# Logs
+*.log
