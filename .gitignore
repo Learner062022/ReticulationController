@@ -1,0 +1,22 @@
+# Build output
+.pio/
+/build/
+/bin/
+/*.elf
+/*.hex
+
+# IDE/editor files
+.vscode/
+.idea/
+
+# Temporary files
+*.log
+*.tmp
+
+# Python environment (if used)
+__pycache__/
+*.pyc
+
+# Secrets / sensitive configs
+*.env
+Config.h
