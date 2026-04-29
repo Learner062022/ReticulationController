@@ -1,9 +1,7 @@
 #include "FlowMeter.h"
-#include <Arduino.h>
 
-FlowMeter::FlowMeter(const unsigned int num_pin)
-    : pin_num(num_pin)
-{
+void FlowMeter::pulse() {
+    pulses++;
 }
 
 float FlowMeter::liters() const {
