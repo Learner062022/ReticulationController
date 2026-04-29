@@ -1,12 +1,9 @@
 #include "FlowMeter.h"
+#include <Arduino.h>
 
-FlowMeter::FlowMeter(uint8_t pin)
-    : pin(pin)
+FlowMeter::FlowMeter(const unsigned int num_pin)
+    : pin_num(num_pin)
 {
-}
-
-void FlowMeter::pulse() {
-    pulses++;
 }
 
 float FlowMeter::liters() const {
@@ -21,8 +18,4 @@ void FlowMeter::reset() {
     noInterrupts();
     pulses = 0;
     interrupts();
-}
-
-uint8_t FlowMeter::get_pin() const {
-    return pin;
 }
