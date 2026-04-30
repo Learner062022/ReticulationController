@@ -1,19 +1,23 @@
 #pragma once
 
 #include "FlowMeter.h"
+#include <AdafruitIO_WiFi.h>
 
 class Zone {
 private:
-    FlowMeter& meter;
+    FlowMeter meter;
+    const uint8_t solenoidPin;
     const float limit;
-    bool valve_open=false;
+
+// Needs to own ISR handling; complete irrigation control must be encapsulated
 
 public:
-    Zone(FlowMeter& meter,
+    Zone(uint8_t flowMeterPin,
+        uint8_t solenoidPin,
         const float limit);
 
-    void set_valve(bool v);
-    void update();
-    bool is_open() const;
-    float liters();
+    void pulse();
+    void handle_solenoid();
+    float liters() const;
+    FlowMeter& get_meter();
 };
