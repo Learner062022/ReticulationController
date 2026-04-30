@@ -1,18 +1,28 @@
 #include "FlowMeter.h"
 
-FlowMeter::FlowMeter(const unsigned int num_pin)
-    : pin_num(num_pin)
+FlowMeter::FlowMeter(uint8_t pin)
+    : pin(pin)
 {
 }
 
-float FlowMeter::liters() const {
-  return static_cast<float>(pulse_count) / pulses_per_liter;
+void FlowMeter::pulse() {
+    pulses++;
 }
 
-void FlowMeter::pulse() {
-  pulse_count++;
+float FlowMeter::liters() const {
+    noInterrupts();
+    unsigned long copy = pulses;
+    interrupts();
+
+    return static_cast<float>(copy) / pulses_per_liter;
 }
 
 void FlowMeter::reset() {
-  pulse_count = 0;
+    noInterrupts();
+    pulses = 0;
+    interrupts();
+}
+
+uint8_t FlowMeter::get_pin() const {
+    return pin;
 }
