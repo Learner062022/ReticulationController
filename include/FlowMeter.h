@@ -1,17 +1,14 @@
 #pragma once
 
-#include <Arduino.h>
-
 class FlowMeter {
 private:
-    const uint8_t pin;
-    static constexpr float pulses_per_liter = 450.0f;
-    volatile unsigned long pulses = 0;
+    const unsigned int pulses_per_liter = 450;
+    const unsigned int pin_num;
+    volatile unsigned int pulse_count = 0;
 
 public:
-    FlowMeter(uint8_t pin);
-    void pulse();
+    FlowMeter(const unsigned int num_pin);
     float liters() const;
+    void pulse();
     void reset();
-    uint8_t get_pin() const;
 };
