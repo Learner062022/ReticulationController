@@ -1,25 +1,37 @@
 #include "Zone.h"
 
-Zone::Zone(FlowMeter &meterRef, const float limit)
-    : meter(meterRef),
+Zone::Zone(uint8_t flowMeterPin,
+    uint8_t solenoidPin, 
+    const float limit)
+    : meter(flowMeterPin),
+      solenoidPin(solenoidPin),
       limit(limit)
 {
 }
 
-void Zone::set_valve(bool v) {
-    valve_open = v;
+// attachInterrupt(digitalPinToInterrupt(pin), ISR, mode);
+// void IRAM_ATTR onPulse() {
+    
+// }
+
+void Zone::pulse() {
+    meter.pulse();
 }
 
-void Zone::update() {
+void Zone::handle_solenoid() {
     if (meter.liters() >= limit) {
-        set_valve(false);
+        // digitalWrite(soleniodPin, ...)
+    }
+    else
+    {
+        // digitalWrite(soleniodPin, ...)
     }
 }
 
-bool Zone::is_open() const {
-    return valve_open;
+float Zone::liters() const {
+    return meter.liters();
 }
 
-float Zone::liters() {
-    return meter.liters();
+FlowMeter& Zone::get_meter() {
+    return meter;
 }
