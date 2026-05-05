@@ -1,28 +1,19 @@
 #include "FlowMeter.h"
 
-FlowMeter::FlowMeter(uint8_t pin)
-    : pin(pin)
-{
-}
-
-void FlowMeter::pulse() {
-    pulses++;
+FlowMeter::FlowMeter(uint8_t p) : pin(p), pulses(0) {
+    pinMode(pin, INPUT_PULLUP);
+    attachInterruptArg(digitalPinToInterrupt(pin), isr, this, RISING);
 }
 
 float FlowMeter::liters() const {
     noInterrupts();
-    unsigned long copy = pulses;
+    uint32_t copy = pulses;
     interrupts();
 
-    return static_cast<float>(copy) / pulses_per_liter;
+    return static_cast<float>(copy) / PULSES_PER_LITER;
 }
 
-void FlowMeter::reset() {
-    noInterrupts();
-    pulses = 0;
-    interrupts();
-}
-
-uint8_t FlowMeter::get_pin() const {
-    return pin;
+void IRAM_ATTR FlowMeter::isr(void* arg) {
+    FlowMeter* self = static_cast<FlowMeter*>(arg);
+    self->pulses++;
 }
