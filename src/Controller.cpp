@@ -1,12 +1,20 @@
 #include "Controller.h"
 
-Controller::Controller(std::array<Zone, ZONE_COUNT>& zonesRef, uint8_t flowPin)
+Controller::Controller(std::array<Zone, ZONE_COUNT>& zonesRef,
+                       uint8_t flowPin,
+                       uint8_t masterValvePin)
     : zones(zonesRef),
       activeZone(-1),
       flowMeter(flowPin),
-      startLiters(0) {}
+      startLiters(0),
+      masterValvePin(masterValvePin)
+{
+    pinMode(masterValvePin, OUTPUT);
+    digitalWrite(masterValvePin, HIGH);
+}
 
 void Controller::startCycle() {
+    digitalWrite(masterValvePin, LOW);
     activeZone = 0;
     startLiters = flowMeter.liters();
     zones[activeZone].start();
@@ -21,20 +29,16 @@ void Controller::update() {
     float used = current - startLiters;
 
     if (used >= zones[activeZone].getLimitLiters()) {
-        zones[activeZone].stop();
 
+        zones[activeZone].stop();
         activeZone++;
 
         if (activeZone >= ZONE_COUNT) {
+            digitalWrite(masterValvePin, HIGH);
             activeZone = -1;
             return;
         }
 
-        startLiters = current;
         zones[activeZone].start();
     }
-}
-
-float Controller::getLiters() const {
-    return flowMeter.liters();
 }

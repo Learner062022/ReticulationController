@@ -12,10 +12,13 @@ private:
     int activeZone;
     FlowMeter flowMeter;
     float startLiters;
+    uint8_t masterValvePin;
 
 public:
-    Controller(std::array<Zone, ZONE_COUNT>& zones, uint8_t flowPin);
+    Controller(std::array<Zone, ZONE_COUNT>& zones,
+               uint8_t flowPin,
+               uint8_t masterValvePin);
+
     void startCycle();
     void update();
-    float getLiters() const;
 };
