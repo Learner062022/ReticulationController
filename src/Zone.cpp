@@ -6,21 +6,17 @@ Zone::Zone(uint8_t pin, float limitL)
       limitLiters(limitL) {
 
     pinMode(valvePin, OUTPUT);
-    digitalWrite(valvePin, LOW);
+    digitalWrite(valvePin, HIGH);
 }
 
 void Zone::start() {
-    digitalWrite(valvePin, HIGH);
+    digitalWrite(valvePin, LOW);
     active = true;
 }
 
 void Zone::stop() {
-    digitalWrite(valvePin, LOW);
+    digitalWrite(valvePin, HIGH);
     active = false;
-}
-
-bool Zone::isActive() const {
-    return active;
 }
 
 float Zone::getLimitLiters() const {
