@@ -20,5 +20,6 @@ public:
                uint8_t masterValvePin);
 
     void startCycle();
+    float getUsedLiters();
     void update();
 };

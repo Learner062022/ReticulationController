@@ -20,15 +20,16 @@ void Controller::startCycle() {
     zones[activeZone].start();
 }
 
+float Controller::getUsedLiters() {
+    return flowMeter.liters() - startLiters;
+}
+
 void Controller::update() {
     if (activeZone == -1) {
         return;
     }
 
-    float current = flowMeter.liters();
-    float used = current - startLiters;
-
-    if (used >= zones[activeZone].getLimitLiters()) {
+    if (getUsedLiters() >= zones[activeZone].getLimitLiters()) {
 
         zones[activeZone].stop();
         activeZone++;
