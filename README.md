@@ -1,23 +1,23 @@
 # Reticulation Controller
 
 ## Overview
-An ESP32-based irrigation controller that monitors total water usage via a flow meter and automatically shuts off solenoid valves when preset per-zone limits are reached.
+An ESP32-based automated irrigation system that controls multi-zone watering using flow-based usage limit and provides cloud-based monitoring of water consumption.
 
 ---
 
 ## Features
-- Per-zone water usage limits (software-managed)  
-- Automatic solenoid shutoff  
-- Centralized flow tracking via single flow meter  
-- Remote monitoring via online dashboard  
+- Multi-zone irrigation control  
+- Flow meter-based water usage trackiing per zone
+- Automatic solenoid valve switching via relay control
+- Configurable water usage limits per zone
+- Cloud telemetry for usage monitoring (read-only dashboard integration)  
 
 ---
 
 ## Hardware Options
 
 ### Option 1: Integrated Board
-- ESP32 AC/DC Wi-Fi 4-Channel Relay Module  
-- Combines controller, relays, and power supply  
+- ESP32 AC/DC Wi-Fi 4-Channel Relay Module (controller + relays + power supply)  
 
 ### Option 2: Individual Components
 
@@ -28,8 +28,6 @@ An ESP32-based irrigation controller that monitors total water usage via a flow 
 | ESP32                | 1        |
 | AC → DC power supply | 1        |
 
-**Notes:** Buck converter only required if voltage conversion is needed. ESP32 GPIO operates at 3.3V logic.
-
 ---
 
 ## Enclosure
@@ -38,28 +36,19 @@ An ESP32-based irrigation controller that monitors total water usage via a flow 
 
 ---
 
-## Installation
-1. Connect components  
-2. Configure power supply  
-3. Upload firmware  
-4. Calibrate flow meter  
-5. Configure per-zone usage limits  
-6. Test valve operation  
-7. Set up dashboard  
-
----
-
-## Usage
-1. Power on the ESP32  
-2. Configure zone limits via dashboard (or local controls if implemented)  
-3. System operates automatically based on flow usage tracking  
+## Operation
+1. Power on the system
+2. ESP32 initializes and loads configuration 
+3. Irrigation cycles begin automatically  
+4. Zones activated based on flow limits  
+5. Water consumption data is logged to the cloud dashboard 
 
 ---
 
 ## Documentation
-For system architecture, data flow, protocols, and testing details, refer to the **Design & Prototype document**.
+For system architecture, data flow, firmware design and testing details, refer to the [Design & Prototype document](./docs/design-prototype.md).
 
 ---
 
 ## License
-This project is licensed under the MIT License.
+This project is licensed under the [MIT License](./LICENSE.md).
