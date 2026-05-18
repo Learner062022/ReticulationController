@@ -11,7 +11,7 @@ std::array<Zone, 4> zones = {
     Zone(6, 1)
 };
 
-Controller controller(zones, 2);
+Controller controller(zones, 2, 7);
 
 AdafruitIO_WiFi io(IO_USERNAME, IO_KEY, WIFI_SSID, WIFI_PASS);
 AdafruitIO_Feed* waterFeed = io.feed("total_usage");
@@ -29,10 +29,6 @@ void publishIfDue() {
     lastPublish = now;
 
     waterFeed->save(totalLiters);
-
-    Serial.print("Total usage: ");
-    Serial.print(totalLiters, 2);
-    Serial.println(" L");
 }
 
 void setup() {
@@ -54,8 +50,6 @@ void loop() {
     io.run();
 
     controller.update();
-
-    totalLiters = controller.getLiters(); 
-
+    
     publishIfDue();
 }
