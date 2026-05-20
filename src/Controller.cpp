@@ -1,45 +1,46 @@
-#include "Controller.h"
+#include "controller.h"
+#include "i_zone.h"
+#include "Arduino.h"
 
-Controller::Controller(std::array<Zone, ZONE_COUNT>& zonesRef,
-                       uint8_t flowPin,
-                       uint8_t masterValvePin)
-    : zones(zonesRef),
+Controller::Controller(std::array<IZone*, ZONE_COUNT>& zones,
+                       IZone* masterZone,
+                       IFlowMeter& flowMeter)
+    : zones(zones),
+      masterZone(masterZone),
       activeZone(-1),
-      flowMeter(flowPin),
-      startLiters(0),
-      masterValvePin(masterValvePin)
+      flowMeter(flowMeter),
+      startLiters(0)
 {
-    pinMode(masterValvePin, OUTPUT);
-    digitalWrite(masterValvePin, HIGH);
 }
 
 void Controller::startCycle() {
-    digitalWrite(masterValvePin, LOW);
+    masterZone->openValve();
     activeZone = 0;
-    startLiters = flowMeter.liters();
-    zones[activeZone].start();
+    startLiters = flowMeter.getTotalLiters();
+    zones[activeZone]->openValve();
 }
 
 float Controller::getUsedLiters() {
-    return flowMeter.liters() - startLiters;
+    return flowMeter.getTotalLiters() - startLiters;
 }
 
 void Controller::update() {
     if (activeZone == -1) {
         return;
     }
+    
+    if (getUsedLiters() >= zones[activeZone] -> getLimitLiters()) {
 
-    if (getUsedLiters() >= zones[activeZone].getLimitLiters()) {
-
-        zones[activeZone].stop();
+        zones[activeZone]->closeValve();
         activeZone++;
 
         if (activeZone >= ZONE_COUNT) {
-            digitalWrite(masterValvePin, HIGH);
+            startLiters = flowMeter.getTotalLiters();
+            masterZone->closeValve();
             activeZone = -1;
             return;
         }
 
-        zones[activeZone].start();
+        zones[activeZone]->openValve();
     }
 }

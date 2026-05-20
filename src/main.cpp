@@ -1,22 +1,30 @@
 #include <Arduino.h>
 #include <AdafruitIO_WiFi.h>
 #include "config.h"
-#include "Controller.h"
+#include "controller.h"
+#include "fake_zone.h"
+#include "fake_flow_meter.h"
 #include <array>
 
-std::array<Zone, 4> zones = {
-    Zone(3, 1),
-    Zone(4, 1),
-    Zone(5, 1),
-    Zone(6, 1)
+FakeFlowMeter fakeFlow;
+
+FakeZone masterZone = FakeZone();
+FakeZone zone1 = FakeZone(10);
+FakeZone zone2 = FakeZone(10);
+FakeZone zone3 = FakeZone(10);
+FakeZone zone4 = FakeZone(10);
+
+std::array<IZone*, 4> zones = {
+    &zone1,
+    &zone2,
+    &zone3,
+    &zone4
 };
 
-Controller controller(zones, 2, 7);
+Controller controller(zones, &masterZone, fakeFlow);
 
 AdafruitIO_WiFi io(IO_USERNAME, IO_KEY, WIFI_SSID, WIFI_PASS);
-AdafruitIO_Feed* waterFeed = io.feed("total_usage");
-
-float totalLiters = 0.0f;
+AdafruitIO_Feed* waterFeed = io.feed("reticulationcontroller.total-usage");
 
 unsigned long lastPublish = 0;
 constexpr unsigned long PUBLISH_INTERVAL_MS = 5000;
@@ -25,15 +33,13 @@ void publishIfDue() {
     unsigned long now = millis();
 
     if (now - lastPublish < PUBLISH_INTERVAL_MS) return;
-
+    
     lastPublish = now;
-
     waterFeed->save(controller.getUsedLiters());
 }
 
 void setup() {
     Serial.begin(115200);
-
     io.connect();
 
     while (io.status() < AIO_CONNECTED) {
@@ -42,14 +48,14 @@ void setup() {
     }
 
     Serial.println("\nConnected to Adafruit IO");
-
     controller.startCycle();
 }
 
+// Simulation note:
+// In simulation builds, synthetic flow must be injected so controller logic and telemtry advance.
+// Real hardware increments flow via the YFS201 ISR, so no manual flow injection is required here.
 void loop() {
     io.run();
-
     controller.update();
-
     publishIfDue();
 }
