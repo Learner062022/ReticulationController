@@ -1,6 +1,6 @@
-#include "Zone.h"
+#include "hardware_zone.h"
 
-Zone::Zone(uint8_t pin, float limitL)
+HardwareZone::HardwareZone(uint8_t pin, float limitL)
     : valvePin(pin),
       limitLiters(limitL) {
 
@@ -8,14 +8,14 @@ Zone::Zone(uint8_t pin, float limitL)
     digitalWrite(valvePin, HIGH);
 }
 
-void Zone::start() {
+void HardwareZone::openValve() {
     digitalWrite(valvePin, LOW);
 }
 
-void Zone::stop() {
+void HardwareZone::closeValve() {
     digitalWrite(valvePin, HIGH);
 }
 
-float Zone::getLimitLiters() const {
+float HardwareZone::getLimitLiters() const {
     return limitLiters;
 }

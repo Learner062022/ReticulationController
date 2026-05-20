@@ -1,23 +1,23 @@
 #pragma once
 
-#include "Zone.h"
-#include "FlowMeter.h"
+#include "i_zone.h"
+#include "i_flow_meter.h"
 #include <array>
 
 constexpr uint8_t ZONE_COUNT = 4;
 
 class Controller {
 private:
-    std::array<Zone, ZONE_COUNT>& zones;
-    int activeZone;
-    FlowMeter flowMeter;
+    std::array<IZone*, ZONE_COUNT>& zones;
+    IZone* masterZone;
+    int8_t activeZone;
+    IFlowMeter& flowMeter;
     float startLiters;
-    uint8_t masterValvePin;
 
 public:
-    Controller(std::array<Zone, ZONE_COUNT>& zones,
-               uint8_t flowPin,
-               uint8_t masterValvePin);
+    Controller(std::array<IZone*, ZONE_COUNT>& zones,
+               IZone* masterZone, 
+               IFlowMeter& flowMeter);
 
     void startCycle();
     float getUsedLiters();
