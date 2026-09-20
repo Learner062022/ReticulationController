@@ -28,7 +28,7 @@ void publishIfDue() {
 
     lastPublish = now;
 
-    waterFeed->save(totalLiters);
+    waterFeed->save(controller.getUsedLiters());
 }
 
 void setup() {
@@ -50,6 +50,6 @@ void loop() {
     io.run();
 
     controller.update();
-    
+
     publishIfDue();
 }
