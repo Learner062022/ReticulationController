@@ -1,6 +1,4 @@
 #include "controller.h"
-#include "i_zone.h"
-#include "Arduino.h"
 
 Controller::Controller(std::array<IZone*, ZONE_COUNT>& zones,
                        IZone* masterZone,

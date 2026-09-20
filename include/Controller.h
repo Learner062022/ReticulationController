@@ -2,15 +2,16 @@
 
 #include "i_zone.h"
 #include "i_flow_meter.h"
+#include <cstdint>
 #include <array>
 
-constexpr uint8_t ZONE_COUNT = 4;
+constexpr std::uint8_t ZONE_COUNT = 4;
 
 class Controller {
 private:
     std::array<IZone*, ZONE_COUNT>& zones;
     IZone* masterZone;
-    int8_t activeZone;
+    std::int8_t activeZone;
     IFlowMeter& flowMeter;
     float startLiters;
 
