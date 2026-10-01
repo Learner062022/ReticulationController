@@ -8,7 +8,7 @@ Prototype project documentation and PlatformIO source.
 3. Build and upload the firmware.
 
 ## Documentation
-See [docs/reticulation-controller-iot-design-prototype.md](./docs/reticulation-controller-iot-design-prototype.md) for the system design, implementation details, testing, and limitations.
+See [docs/design-prototype.md](./docs/design-prototype.md) for the system design, implementation details, testing, and limitations.
 
 ## License
 This project is licensed under the [MIT License](./LICENSE.md).
