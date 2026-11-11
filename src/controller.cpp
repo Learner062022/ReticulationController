@@ -39,6 +39,7 @@ void Controller::update() {
             return;
         }
 
+        startLiters = flowMeter.getTotalLiters();
         zones[activeZone]->openValve();
     }
 }
